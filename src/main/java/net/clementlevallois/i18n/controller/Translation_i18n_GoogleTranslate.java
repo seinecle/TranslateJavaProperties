@@ -24,7 +24,7 @@ public class Translation_i18n_GoogleTranslate {
 
     public static Map<String, String> runTranslation(int maxRun, Set<Object> keySetSource, Set<String> keySetTarget, Properties propsSource, String langTarget, Properties propsTarget) throws FileNotFoundException, IOException {
 
-        String jsonPath = propsParams.getProperty("path to Google Secret");
+        String jsonPath = propsParams.getProperty("path_to_Google_Secret");
 
         GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(jsonPath))
                 .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));

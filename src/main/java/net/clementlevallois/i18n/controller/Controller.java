@@ -4,6 +4,7 @@
  */
 package net.clementlevallois.i18n.controller;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -26,7 +27,11 @@ import java.util.logging.Logger;
  */
 public class Controller {
 
-    static String[] langsTarget = new String[]{"LO", "FR", "IT", "ES", "PT-BR", "ZH", "DE"};
+    static String[] langsTargetDeepL = new String[]{"PT-BR", "PT-PT"};
+    
+    // list from https://cloud.google.com/translate/docs/languages?hl=fr
+    static String[] langsTargetGoogle = new String[]{"AZ", "BE", "BN", "BS", "CA", "CO", "EO", "ET", "EU", "FI", "GL", "GU", "FY", "HA", "HE","HI", "HMN", "HAW", "HR", "HU", "HT", "ID", "IG", "IS", "KA", "SQ", "AM", "AR", "HY", "CEB", "GA", "JA", "JV", "KN", "KK", "KM", "RW", "KO", "KU", "KY", "LV", "LT", "LB", "MK", "MG", "MS", "ML", "MT", "MI", "MR", "MN", "MY", "NE", "NO", "NY", "OR", "PS", "FA", "PL", "PT", "PA", "RO", "RU", "SM", "GD", "SR", "ST", "SN", "SD", "SI", "SK", "SL", "SO", "SU", "SW", "SV", "TL", "TG", "TA", "TR", "TT", "TE", "TH", "TK", "UK", "UR", "UG", "UZ", "VI", "CY", "XH", "YI", "YO", "ZU", "LO", "ZH-TW", "BG", "CS", "DA", "DE", "EL", "ES", "FR", "IT", "NL", "ZH"};
+    static String[] langsTarget;
 
     static String propertiesSourceLanguage = "text_en.properties";
     static String fullPathToPropertiesSourceLanguage;
@@ -34,11 +39,17 @@ public class Controller {
     static Properties propsParams;
 
     public static void main(String[] args) throws URISyntaxException, UnsupportedEncodingException, FileNotFoundException, IOException {
-        propsParams = loadProperties("/private/props.properties");
-        String pathToI18Nproperties = propsParams.getProperty("path to i18n properties");
+        propsParams = loadProperties("private/props.properties");
+        String pathToI18Nproperties = propsParams.getProperty("path_to_i18n_properties");
         fullPathToPropertiesSourceLanguage = pathToI18Nproperties + propertiesSourceLanguage;
 
         Properties propsSource = loadProperties(fullPathToPropertiesSourceLanguage);
+
+        if (translationService.equals("DeepL")) {
+            langsTarget = langsTargetGoogle;
+        } else {
+            langsTarget = langsTargetDeepL;
+        }
 
         Set<Object> keySetSource = propsSource.keySet();
 
@@ -51,6 +62,11 @@ public class Controller {
                 fileSuffix = fileSuffix.toLowerCase();
             }
             String pathTarget = pathToI18Nproperties + "text_" + fileSuffix + ".properties";
+            File f = new File(pathTarget);
+            if (!f.exists()) {
+                f.getParentFile().mkdirs();
+                f.createNewFile();
+            }
             Properties propsTarget = loadProperties(pathTarget);
             Set<Object> keySetObjectTarget = propsTarget.keySet();
             Set<String> keySetTarget = new HashSet();

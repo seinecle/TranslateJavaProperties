@@ -60,7 +60,7 @@ public class Translation_i18n_DeepL {
                     continue;
                 }
                 String valueSource = propsSource.getProperty(key);
-                String auth_key = "auth_key" + "=" + propsParams.getProperty("deepl api key")+ ":fx";
+                String auth_key = "auth_key" + "=" + propsParams.getProperty("deepl_api_key")+ ":fx";
                 String text = "text" + "=" + URLEncoder.encode(valueSource, StandardCharsets.UTF_8.toString());
                 String target_lang = "target_lang" + "=" + langTarget;
                 String source_lang = "source_lang" + "=" + "EN";
@@ -89,9 +89,15 @@ public class Translation_i18n_DeepL {
                     }
                 });
                 futures.add(future);
+                
+                // this is because we need to slow down a bit the requests to DeepL - sending too many thros a
+                // java.util.concurrent.CompletionException: java.io.IOException: too many concurrent streams
+                Thread.sleep(20);
+                
             }
 
-        } catch (UnsupportedEncodingException | URISyntaxException ex) {
+        } catch (UnsupportedEncodingException | URISyntaxException | InterruptedException ex) {
+            
             Logger.getLogger(Translation_i18n_DeepL.class.getName()).log(Level.SEVERE, null, ex);
         }
         CompletableFuture<Void> combinedFuture = CompletableFuture.allOf(futures.toArray((new CompletableFuture[0])));
