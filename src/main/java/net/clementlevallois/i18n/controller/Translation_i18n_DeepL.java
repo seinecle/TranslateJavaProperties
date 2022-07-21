@@ -25,7 +25,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static net.clementlevallois.i18n.controller.Controller.propsParams;
+import static net.clementlevallois.i18n.controller.Controller.sourceLang;
 
 /**
  *
@@ -33,7 +33,7 @@ import static net.clementlevallois.i18n.controller.Controller.propsParams;
  */
 public class Translation_i18n_DeepL {
 
-    public static Map<String, String> runTranslation(Integer maxRun, Set<Object> keySetSource, Set<String> keySetTarget, Properties propsSource, String langTarget, Properties propsTarget) {
+    public static Map<String, String> runTranslation(Integer maxRun, Set<Object> keySetSource, Set<String> keySetTarget, Properties propsSource, Properties propsParams, String sourceLang, String langTarget, Properties propsTarget) {
         HttpRequest request;
         HttpClient client = HttpClient.newHttpClient();
         int counter = 0;
@@ -63,7 +63,7 @@ public class Translation_i18n_DeepL {
                 String auth_key = "auth_key" + "=" + propsParams.getProperty("deepl_api_key")+ ":fx";
                 String text = "text" + "=" + URLEncoder.encode(valueSource, StandardCharsets.UTF_8.toString());
                 String target_lang = "target_lang" + "=" + langTarget;
-                String source_lang = "source_lang" + "=" + "EN";
+                String source_lang = "source_lang" + "=" + sourceLang;
                 String tag_handling = "tag_handling" + "=" + "html";
 
                 URI uri = new URI("https://api-free.deepl.com/v2/translate?" + tag_handling + "&" + source_lang + "&" + auth_key + "&" + text + "&" + target_lang);

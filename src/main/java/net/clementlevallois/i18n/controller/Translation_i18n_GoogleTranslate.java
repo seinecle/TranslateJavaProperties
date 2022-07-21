@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import static net.clementlevallois.i18n.controller.Controller.propsParams;
 
 /**
  *
@@ -22,7 +21,7 @@ import static net.clementlevallois.i18n.controller.Controller.propsParams;
  */
 public class Translation_i18n_GoogleTranslate {
 
-    public static Map<String, String> runTranslation(int maxRun, Set<Object> keySetSource, Set<String> keySetTarget, Properties propsSource, String langTarget, Properties propsTarget) throws FileNotFoundException, IOException {
+    public static Map<String, String> runTranslation(int maxRun, Set<Object> keySetSource, Set<String> keySetTarget, Properties propsSource, Properties propsParams, String sourceLang, String langTarget, Properties propsTarget) throws FileNotFoundException, IOException {
 
         String jsonPath = propsParams.getProperty("path_to_Google_Secret");
 
@@ -56,7 +55,7 @@ public class Translation_i18n_GoogleTranslate {
 
             Translation translationToolByGoogle = translate.translate(
                     valueSource,
-                    Translate.TranslateOption.sourceLanguage("en"),
+                    Translate.TranslateOption.sourceLanguage(sourceLang),
                     Translate.TranslateOption.targetLanguage(langTarget),
                     // Use "base" for standard edition, "nmt" for the premium model.
                     Translate.TranslateOption.model("nmt"));

@@ -25,22 +25,22 @@ import java.util.logging.Logger;
  *
  * @author LEVALLOIS
  */
-public class Controller {
+public class ControllerUmigonExplain {
 
     static String[] langsTargetDeepL = new String[]{"PT-BR", "PT-PT"};
     
     // list from https://cloud.google.com/translate/docs/languages?hl=fr
-    static String[] langsTargetGoogle = new String[]{"AZ", "BE", "BN", "BS", "CA", "CO", "EO", "ET", "EU", "FI", "GL", "GU", "FY", "HA", "HE","HI", "HMN", "HAW", "HR", "HU", "HT", "ID", "IG", "IS", "KA", "SQ", "AM", "AR", "HY", "CEB", "GA", "JA", "JV", "KN", "KK", "KM", "RW", "KO", "KU", "KY", "LV", "LT", "LB", "MK", "MG", "MS", "ML", "MT", "MI", "MR", "MN", "MY", "NE", "NO", "NY", "OR", "PS", "FA", "PL", "PT", "PA", "RO", "RU", "SM", "GD", "SR", "ST", "SN", "SD", "SI", "SK", "SL", "SO", "SU", "SW", "SV", "TL", "TG", "TA", "TR", "TT", "TE", "TH", "TK", "UK", "UR", "UG", "UZ", "VI", "CY", "XH", "YI", "YO", "ZU", "LO", "ZH-TW", "BG", "CS", "DA", "DE", "EL", "ES", "FR", "IT", "NL", "ZH"};
+    static String[] langsTargetGoogle = new String[]{"AZ", "BE", "BN", "FR", "BS", "CA", "CO", "EO", "ET", "EU", "FI", "GL", "GU", "FY", "HA", "HE","HI", "HMN", "HAW", "HR", "HU", "HT", "ID", "IG", "IS", "KA", "SQ", "AM", "AR", "HY", "CEB", "GA", "JA", "JV", "KN", "KK", "KM", "RW", "KO", "KU", "KY", "LV", "LT", "LB", "MK", "MG", "MS", "ML", "MT", "MI", "MR", "MN", "MY", "NE", "NO", "NY", "OR", "PS", "FA", "PL", "PT", "PA", "RO", "RU", "SM", "GD", "SR", "ST", "SN", "SD", "SI", "SK", "SL", "SO", "SU", "SW", "SV", "TL", "TG", "TA", "TR", "TT", "TE", "TH", "TK", "UK", "UR", "UG", "UZ", "VI", "CY", "XH", "YI", "YO", "ZU", "LO", "ZH-TW", "BG", "CS", "DA", "DE", "EL", "ES", "IT", "NL", "ZH"};
     static String[] langsTarget;
 
     static String propertiesSourceLanguage = "text_en.properties";
-    static String sourceLang = "en";
+    static String sourceLang = "EN";
     static String fullPathToPropertiesSourceLanguage;
-    static String translationService = "DeppL"; // can be "Google" or "DeepL"
+    static String translationService = "DeepL"; // can be "Google" or "DeepL"
     static Properties propsParams;
 
     public static void main(String[] args) throws URISyntaxException, UnsupportedEncodingException, FileNotFoundException, IOException {
-        propsParams = loadProperties("private/props.properties");
+        propsParams = loadProperties("private/propsUmigonExplain.properties");
         String pathToI18Nproperties = propsParams.getProperty("path_to_i18n_properties");
         fullPathToPropertiesSourceLanguage = pathToI18Nproperties + propertiesSourceLanguage;
 
@@ -98,12 +98,12 @@ public class Controller {
             try ( OutputStream output = new FileOutputStream(pathTarget)) {
                 propsTarget.store(output, null);
             } catch (IOException ex) {
-                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ControllerUmigonExplain.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             // testing the print of one value in the translated target
             Properties loadProperties = loadProperties(pathTarget);
-            Object oneValue = loadProperties.getProperty("labelling.item_eval.categorization.annotate_injunction");
+            Object oneValue = loadProperties.getProperty("decision.motive.WINNER_TAKES_ALL.NGRAM");
             System.out.println("one value: " + oneValue);
         }
     }
